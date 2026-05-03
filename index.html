@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VisionDx | AI Medical Assistant</title>
+
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tesseract.js & jsPDF -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Background decorative elements -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="app-container">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar glass-panel">
+        <div class="logo">
+          <i class="ph-fill ph-heartbeat"></i>
+          <span>VisionDx</span>
+        </div>
+
+        <nav class="main-nav">
+          <button class="nav-item active" data-target="eye">
+            <i class="ph ph-eye"></i>
+            <span>Eye Analysis</span>
+          </button>
+          <button class="nav-item" data-target="skin">
+            <i class="ph ph-hand-swipe"></i>
+            <span>Skin/Rash Detection</span>
+          </button>
+          <button class="nav-item" data-target="medicine">
+            <i class="ph ph-pill"></i>
+            <span>Medicine Verifier</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>Beta Version</p>
+          <div class="status-indicator" style="margin-bottom: 15px">
+            <span class="dot pulse"></span>
+            <span>Systems Online</span>
+          </div>
+          <div
+            class="about-section"
+            style="
+              font-size: 0.8rem;
+              color: var(--text-muted);
+              line-height: 1.4;
+              border-top: 1px solid var(--panel-border);
+              padding-top: 15px;
+            "
+          >
+            <strong
+              style="
+                color: var(--text-main);
+                display: block;
+                margin-bottom: 5px;
+              "
+              >About VisionDx</strong
+            >
+            Medicine errors and undiagnosed conditions are common due to lack of
+            accessible tools. VisionDx provides instant AI-powered medical
+            assistance from any device.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <header class="top-header">
+          <div style="flex: 1">
+            <h1 id="page-title">Eye Disease Predictor</h1>
+            <p id="page-subtitle">
+              Analyze eye color to detect potential illnesses like Hepatitis or
+              Anemia.
+            </p>
+
+            <div
+              class="home-stats"
+              style="
+                display: flex;
+                gap: 20px;
+                margin-top: 15px;
+                font-size: 0.85rem;
+                color: var(--text-muted);
+              "
+            >
+              <span style="display: flex; align-items: center; gap: 5px"
+                ><i class="ph-fill ph-database"></i> FDA Database: 100,000+
+                Medicines</span
+              >
+              <span style="display: flex; align-items: center; gap: 5px"
+                ><i class="ph-fill ph-brain"></i> AI Models Active: 3</span
+              >
+              <span style="display: flex; align-items: center; gap: 5px"
+                ><i class="ph-fill ph-virus"></i> Conditions Detectable:
+                12+</span
+              >
+            </div>
+          </div>
+          <div class="user-profile">
+            <i class="ph ph-user-circle"></i>
+          </div>
+        </header>
+
+        <div class="workspace-grid">
+          <!-- Input Panel -->
+          <div class="panel input-panel glass-panel">
+            <div class="panel-header">
+              <h2><i class="ph-fill ph-camera"></i> Source Image</h2>
+            </div>
+
+            <div class="input-controls">
+              <button id="btn-camera" class="action-btn primary">
+                <i class="ph ph-video-camera"></i> Take Photo
+              </button>
+              <button id="btn-upload" class="action-btn secondary">
+                <i class="ph ph-upload-simple"></i> Upload Image
+              </button>
+              <input
+                type="file"
+                id="file-input"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+
+            <div
+              class="manual-input-container"
+              id="manual-medicine-input"
+              style="display: none; margin-top: 15px; margin-bottom: 10px"
+            >
+              <label
+                for="medicine-search"
+                style="
+                  font-size: 0.9rem;
+                  color: var(--text-muted);
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >Or manually search for a medicine:</label
+              >
+              <div style="display: flex; gap: 10px">
+                <input
+                  type="text"
+                  id="medicine-search"
+                  placeholder="e.g. Advil, Metformin..."
+                  style="
+                    flex: 1;
+                    padding: 10px;
+                    border-radius: 8px;
+                    border: 1px solid var(--panel-border);
+                    background: rgba(255, 255, 255, 0.05);
+                    color: var(--text-main);
+                    font-family: inherit;
+                  "
+                />
+                <button
+                  id="btn-search-medicine"
+                  class="action-btn primary"
+                  style="width: auto; padding: 0 15px"
+                >
+                  <i class="ph ph-magnifying-glass"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="media-container drop-zone" id="media-container">
+              <!-- Default state -->
+              <div class="placeholder-state" id="placeholder-state">
+                <i class="ph ph-image drop-icon"></i>
+                <p>
+                  Drag & Drop an image here<br /><span
+                    style="
+                      font-size: 0.85rem;
+                      opacity: 0.7;
+                      margin-top: 6px;
+                      display: inline-block;
+                    "
+                    >or click Upload / Take Photo</span
+                  >
+                </p>
+              </div>
+
+              <!-- Video Feed -->
+              <video
+                id="video-feed"
+                autoplay
+                playsinline
+                style="display: none"
+              ></video>
+
+              <!-- Image Preview -->
+              <img
+                id="image-preview"
+                alt="Preview"
+                style="display: none"
+              />
+
+              <!-- Scanning Overlay -->
+              <div
+                class="scanner-overlay"
+                id="scanner-overlay"
+                style="display: none"
+              >
+                <div class="scan-line"></div>
+                <div class="scan-text">AI Analyzing Image...</div>
+              </div>
+            </div>
+
+            <div class="action-footer">
+              <button id="btn-capture-analyze" class="analyze-btn" disabled>
+                <i class="ph-fill ph-check-circle"></i> Analyze Image
+              </button>
+              <button
+                id="btn-stop-camera"
+                class="action-btn danger"
+                style="display: none"
+              >
+                Stop Camera
+              </button>
+            </div>
+          </div>
+
+          <!-- Output/Results Panel -->
+          <div class="panel results-panel glass-panel">
+            <div class="panel-header">
+              <h2><i class="ph-fill ph-chart-bar"></i> Analysis Results</h2>
+            </div>
+
+            <div class="results-content" id="results-content">
+              <!-- Initial State -->
+              <div class="empty-results">
+                <i class="ph ph-magnifying-glass"></i>
+                <p>
+                  Capture or upload an image to view AI analysis and risk
+                  predictions here.
+                </p>
+              </div>
+
+              <!-- Results will be injected here via JS -->
+            </div>
+
+            <div
+              class="session-history"
+              style="
+                margin-top: 20px;
+                border-top: 1px solid var(--panel-border);
+                padding-top: 15px;
+              "
+            >
+              <h3
+                style="
+                  font-size: 1rem;
+                  color: var(--text-main);
+                  margin-bottom: 10px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                "
+              >
+                <i class="ph ph-clock-counter-clockwise"></i> Session History
+              </h3>
+              <ul
+                id="history-list"
+                style="
+                  list-style: none;
+                  padding: 0;
+                  margin: 0;
+                  font-size: 0.85rem;
+                  color: var(--text-muted);
+                  max-height: 120px;
+                  overflow-y: auto;
+                "
+              >
+                <li style="padding: 5px 0">No history available yet.</li>
+              </ul>
+            </div>
+
+            <div
+              class="medical-disclaimer"
+              style="
+                margin-top: 20px;
+                padding: 15px;
+                background: rgba(255, 107, 107, 0.1);
+                border-left: 4px solid var(--danger);
+                border-radius: 4px;
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                line-height: 1.5;
+              "
+            >
+              <strong
+                style="
+                  color: var(--danger);
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  margin-bottom: 5px;
+                "
+                ><i class="ph-fill ph-warning-circle"></i> Disclaimer:</strong
+              >
+              This tool is a prototype and for educational purposes only. The AI
+              analysis and predictions are simulated or retrieved from public
+              databases (like openFDA and Wikipedia) and should
+              <strong>not</strong> be considered professional medical advice,
+              diagnosis, or treatment. Always consult with a qualified
+              healthcare provider.
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+  </body>
+</html>
