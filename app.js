@@ -1,6 +1,7 @@
 // State Management
 const STATE = {
   mode: "eye", // 'eye', 'skin', 'medicine'
+  inputMode: "ai", // 'ai', 'manual'
   hasImage: false,
   mediaStream: null,
   isProcessing: false,
@@ -98,6 +99,12 @@ const DOM = {
   medicineSearch: document.getElementById("medicine-search"),
   btnSearchMedicine: document.getElementById("btn-search-medicine"),
 
+  inputModeToggle: document.getElementById("input-mode-toggle"),
+  aiInputControls: document.getElementById("ai-input-controls"),
+  aiActionFooter: document.getElementById("ai-action-footer"),
+  manualDiseaseContainer: document.getElementById("manual-disease-container"),
+  modeBtns: document.querySelectorAll(".mode-btn"),
+
   mediaContainer: document.getElementById("media-container"),
   placeholderState: document.getElementById("placeholder-state"),
   videoFeed: document.getElementById("video-feed"),
@@ -113,6 +120,7 @@ function init() {
   setupMediaInputs();
   setupAnalysisAction();
   renderHistory();
+  updateInputModeUI(); // Initialize UI based on default mode
 }
 
 // --- History Management ---
@@ -166,14 +174,75 @@ function setupNavigation() {
       // Toggle manual medicine input
       if (STATE.mode === "medicine") {
         DOM.manualMedicineInput.style.display = "block";
+        if (DOM.inputModeToggle) DOM.inputModeToggle.style.display = "none";
       } else {
         DOM.manualMedicineInput.style.display = "none";
         if (DOM.medicineSearch) DOM.medicineSearch.value = "";
+        if (DOM.inputModeToggle) DOM.inputModeToggle.style.display = "flex";
       }
 
       resetWorkspace();
+      updateInputModeUI();
     });
   });
+
+  if (DOM.modeBtns) {
+    DOM.modeBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        DOM.modeBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        STATE.inputMode = btn.getAttribute("data-mode");
+        updateInputModeUI();
+      });
+    });
+  }
+}
+
+function updateInputModeUI() {
+  if (STATE.mode === "medicine") {
+    STATE.inputMode = "ai";
+    if (DOM.inputModeToggle) DOM.inputModeToggle.style.display = "none";
+  } else {
+    if (DOM.inputModeToggle) DOM.inputModeToggle.style.display = "flex";
+  }
+
+  if (STATE.inputMode === "manual") {
+    if (DOM.aiInputControls) DOM.aiInputControls.style.display = "none";
+    if (DOM.mediaContainer) DOM.mediaContainer.style.display = "none";
+    if (DOM.aiActionFooter) DOM.aiActionFooter.style.display = "none";
+    if (DOM.manualDiseaseContainer) {
+      DOM.manualDiseaseContainer.style.display = "block";
+      renderManualDiseaseSlider();
+    }
+    stopCamera();
+  } else {
+    if (DOM.aiInputControls) DOM.aiInputControls.style.display = "flex";
+    if (DOM.mediaContainer) DOM.mediaContainer.style.display = "flex";
+    if (DOM.aiActionFooter) DOM.aiActionFooter.style.display = "flex";
+    if (DOM.manualDiseaseContainer) DOM.manualDiseaseContainer.style.display = "none";
+  }
+}
+
+function renderManualDiseaseSlider() {
+  if (!DISEASE_DATABASE || !DISEASE_DATABASE[STATE.mode]) return;
+  const diseases = Object.values(DISEASE_DATABASE[STATE.mode]);
+
+  let html = '<div class="disease-slider">';
+  diseases.forEach((disease) => {
+    html += `
+      <div class="disease-card">
+        <img src="${disease.image}" alt="${disease.name}" class="disease-img" onerror="this.src='https://placehold.co/400x300?text=${encodeURIComponent(disease.name)}'">
+        <h3>${disease.name}</h3>
+        <p>${disease.description}</p>
+        <button onclick="viewManualDiseaseDetails('${disease.name.replace(/'/g, "\\'")}')">View Details</button>
+      </div>
+    `;
+  });
+  html += '</div>';
+
+  if (DOM.manualDiseaseContainer) {
+    DOM.manualDiseaseContainer.innerHTML = html;
+  }
 }
 
 function resetWorkspace() {
@@ -666,6 +735,41 @@ function getProbColorHex(prob) {
   return "var(--success)";
 }
 
+window.viewManualDiseaseDetails = function(diseaseName) {
+  if (!DISEASE_DATABASE || !DISEASE_DATABASE[STATE.mode]) return;
+  const disease = DISEASE_DATABASE[STATE.mode][diseaseName];
+  if (!disease) return;
+
+  const html = `
+    <div class="result-card" style="border-left: 4px solid var(--primary);">
+        <img src="${disease.image}" alt="${disease.name}" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 15px;">
+        <h2 style="margin: 0 0 10px 0; font-size: 1.8rem; color: var(--primary);">${disease.name}</h2>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;">Description:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            ${disease.description}
+        </p>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;"><i class="ph-fill ph-warning-circle" style="color: var(--warning);"></i> Causes:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid var(--warning); padding-left: 10px; margin-bottom: 15px;">
+            ${disease.causes}
+        </p>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;"><i class="ph-fill ph-shield-check" style="color: var(--success);"></i> Precautions:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid var(--success); padding-left: 10px; margin-bottom: 15px;">
+            ${disease.precautions}
+        </p>
+    </div>
+  `;
+
+  DOM.resultsContent.innerHTML = html;
+
+  // Scroll to results panel on mobile
+  if (window.innerWidth <= 768) {
+      document.querySelector('.results-panel').scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
 function renderResults(data) {
   window.lastResultData = data;
   let html = "";
@@ -721,6 +825,26 @@ function renderResults(data) {
       )
       .join("");
 
+    let extraDiseaseInfo = "";
+    if (DISEASE_DATABASE && DISEASE_DATABASE[STATE.mode] && DISEASE_DATABASE[STATE.mode][primary.name]) {
+        const dInfo = DISEASE_DATABASE[STATE.mode][primary.name];
+        extraDiseaseInfo = `
+            <div style="margin-top: 15px; border-top: 1px solid var(--panel-border); padding-top: 15px;">
+                <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px;">
+                    <img src="${dInfo.image}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink: 0;" />
+                    <div>
+                        <strong style="font-size: 0.85rem; color: var(--text-main); display:block; margin-bottom: 4px;"><i class="ph-fill ph-warning-circle" style="color: var(--warning);"></i> Causes:</strong>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${dInfo.causes}</p>
+                    </div>
+                </div>
+                <div>
+                    <strong style="font-size: 0.85rem; color: var(--text-main); display:block; margin-bottom: 4px;"><i class="ph-fill ph-shield-check" style="color: var(--success);"></i> Precautions:</strong>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${dInfo.precautions}</p>
+                </div>
+            </div>
+        `;
+    }
+
     html = `
             <div class="result-card" style="border-left: 4px solid ${getProbColorHex(primary.prob)};">
                 <h3><i class="ph-fill ph-scan"></i> Primary Detection</h3>
@@ -738,6 +862,8 @@ function renderResults(data) {
                 <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; border-left: 2px solid var(--panel-border); padding-left: 10px;">
                     ${data.primaryDesc}
                 </p>
+
+                ${extraDiseaseInfo}
 
                 <div class="badges-container" style="margin-top: 12px;">
                     ${primary.prob > 60 ? '<span class="badge danger">Consult Specialist</span>' : '<span class="badge info">Monitor Closely</span>'}
