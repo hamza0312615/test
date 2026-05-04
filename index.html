@@ -23,13 +23,31 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Mobile Radial Menu -->
+    <div class="radial-menu-container">
+        <button class="radial-toggle-btn" onclick="toggleRadialMenu()">
+            <i class="ph-fill ph-heartbeat"></i>
+        </button>
+        <div class="radial-menu">
+            <button class="radial-item" data-target="eye" onclick="selectRadialItem('eye')" style="--i:1;">
+                <i class="ph ph-eye"></i>
+            </button>
+            <button class="radial-item" data-target="skin" onclick="selectRadialItem('skin')" style="--i:2;">
+                <i class="ph ph-hand-swipe"></i>
+            </button>
+            <button class="radial-item" data-target="medicine" onclick="selectRadialItem('medicine')" style="--i:3;">
+                <i class="ph ph-pill"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Background decorative elements -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
 
     <div class="app-container">
-      <div class="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
 
       <!-- Sidebar Navigation -->
       <aside id="sidebar" class="sidebar glass-panel">

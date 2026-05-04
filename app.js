@@ -199,6 +199,10 @@ function setupNavigation() {
 }
 
 function updateInputModeUI() {
+  if (STATE.inputMode === "manual") {
+      // In manual mode, explicitly ensure results panel is not hidden if we set it earlier
+      document.querySelector('.results-panel').style.display = "block";
+  }
   if (STATE.mode === "medicine") {
     STATE.inputMode = "ai";
     if (DOM.inputModeToggle) DOM.inputModeToggle.style.display = "none";
@@ -227,14 +231,16 @@ function renderManualDiseaseSlider() {
   if (!DISEASE_DATABASE || !DISEASE_DATABASE[STATE.mode]) return;
   const diseases = Object.values(DISEASE_DATABASE[STATE.mode]);
 
-  let html = '<div class="disease-slider">';
+  let html = '<div class="disease-list-vertical">';
   diseases.forEach((disease) => {
     html += `
-      <div class="disease-card">
+      <div class="disease-card vertical-card">
         <img src="${disease.image}" alt="${disease.name}" class="disease-img" onerror="this.src='https://placehold.co/400x300?text=${encodeURIComponent(disease.name)}'">
-        <h3>${disease.name}</h3>
-        <p>${disease.description}</p>
-        <button onclick="viewManualDiseaseDetails('${disease.name.replace(/'/g, "\\'")}')">View Details</button>
+        <div class="disease-info">
+          <h3>${disease.name}</h3>
+          <p>${disease.description}</p>
+          <button onclick="viewManualDiseaseDetails('${disease.name.replace(/'/g, "\\'")}')">View Details</button>
+        </div>
       </div>
     `;
   });
@@ -664,8 +670,10 @@ async function performAnalysis(manualMedicineName = null) {
         };
       } else {
         const imageSeed = hashString(DOM.imagePreview.src || "");
-        const conditionList =
-          STATE.mode === "eye" ? CONDITIONS.eye : CONDITIONS.skin;
+        let conditionList = STATE.mode === "eye" ? CONDITIONS.eye : CONDITIONS.skin;
+        if (DISEASE_DATABASE && DISEASE_DATABASE[STATE.mode]) {
+            conditionList = Object.keys(DISEASE_DATABASE[STATE.mode]);
+        }
         const topConditions = getRandomConditions(conditionList, 3, imageSeed);
         const probs = generateProbabilities(3, imageSeed);
 
@@ -764,7 +772,14 @@ window.viewManualDiseaseDetails = function(diseaseName) {
 
   DOM.resultsContent.innerHTML = html;
 
-  // Scroll to results panel on mobile
+  // Ensure the results panel is visible on desktop as well
+  if (DOM.resultsContent.parentElement) {
+      DOM.resultsContent.parentElement.style.display = "block";
+  }
+
+  // Scroll to results panel
+  document.querySelector('.results-panel').scrollIntoView({ behavior: 'smooth' });
+
   if (window.innerWidth <= 768) {
       document.querySelector('.results-panel').scrollIntoView({ behavior: 'smooth' });
   }
@@ -1074,3 +1089,58 @@ function toggleMobileSidebar() {
     overlay.classList.toggle('active');
   }
 }
+
+// --- Radial Menu Logic ---
+window.toggleRadialMenu = function() {
+    const container = document.querySelector('.radial-menu-container');
+    if (container) {
+        container.classList.toggle('active');
+    }
+};
+
+window.selectRadialItem = function(target) {
+    // Hide menu
+    document.querySelector('.radial-menu-container').classList.remove('active');
+
+    // Update active visual state
+    document.querySelectorAll('.radial-item').forEach(item => {
+        item.classList.remove('active-item');
+        if (item.dataset.target === target) {
+            item.classList.add('active-item');
+        }
+    });
+
+    // Update active nav items in DOM for consistency
+    DOM.navItems.forEach(nav => {
+        nav.classList.remove("active");
+        if (nav.dataset.target === target) {
+            nav.classList.add("active");
+        }
+    });
+
+    if (STATE.isProcessing) return;
+
+    STATE.mode = target;
+    DOM.pageTitle.textContent = PAGE_CONFIG[STATE.mode].title;
+
+    updateInputModeUI();
+    setModeControls(STATE.mode);
+    resetAnalysisState();
+
+    // Load history
+    if (DOM.historyList) {
+        DOM.historyList.innerHTML = '<div class="empty-history">Loading history...</div>';
+    }
+
+    setTimeout(renderHistory, 300);
+};
+
+// Initialize radial active state on load
+document.addEventListener("DOMContentLoaded", () => {
+    const defaultMode = STATE.mode || 'eye';
+    document.querySelectorAll('.radial-item').forEach(item => {
+        if (item.dataset.target === defaultMode) {
+            item.classList.add('active-item');
+        }
+    });
+});
