@@ -122,11 +122,15 @@
         <div class="workspace-grid">
           <!-- Input Panel -->
           <div class="panel input-panel glass-panel">
-            <div class="panel-header">
+            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
               <h2><i class="ph-fill ph-camera"></i> Source Image</h2>
+              <div class="mode-toggle" id="input-mode-toggle">
+                <button class="mode-btn active" data-mode="ai">AI Analysis</button>
+                <button class="mode-btn" data-mode="manual">Manual Search</button>
+              </div>
             </div>
 
-            <div class="input-controls">
+            <div class="input-controls" id="ai-input-controls">
               <button id="btn-camera" class="action-btn primary">
                 <i class="ph ph-video-camera"></i> Take Photo
               </button>
@@ -224,7 +228,7 @@
               </div>
             </div>
 
-            <div class="action-footer">
+            <div class="action-footer" id="ai-action-footer">
               <button id="btn-capture-analyze" class="analyze-btn" disabled>
                 <i class="ph-fill ph-check-circle"></i> Analyze Image
               </button>
@@ -235,6 +239,11 @@
               >
                 Stop Camera
               </button>
+            </div>
+
+            <!-- Manual Disease Container -->
+            <div id="manual-disease-container" style="display: none; padding: 15px 0;">
+              <!-- Slider will be injected here via JS -->
             </div>
           </div>
 
@@ -329,6 +338,7 @@
     </div>
 
     <!-- Application Script -->
+    <script src="disease_data.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
