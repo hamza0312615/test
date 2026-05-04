@@ -199,6 +199,16 @@ function setupNavigation() {
 }
 
 function updateInputModeUI() {
+  // Sync the UI toggle buttons with the current state
+  if (DOM.modeBtns) {
+      DOM.modeBtns.forEach((b) => {
+          b.classList.remove("active");
+          if (b.dataset.mode === STATE.inputMode) {
+              b.classList.add("active");
+          }
+      });
+  }
+
   if (STATE.inputMode === "manual") {
       // In manual mode, explicitly ensure results panel is not hidden if we set it earlier
       document.querySelector('.results-panel').style.display = "block";
@@ -749,7 +759,7 @@ window.viewManualDiseaseDetails = function(diseaseName) {
   if (!disease) return;
 
   const html = `
-    <div class="result-card" style="border-left: 4px solid var(--primary);">
+    <div style="border-left: 4px solid var(--primary); padding-left: 15px;">
         <img src="${disease.image}" alt="${disease.name}" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 15px;">
         <h2 style="margin: 0 0 10px 0; font-size: 1.8rem; color: var(--primary);">${disease.name}</h2>
 
@@ -770,20 +780,40 @@ window.viewManualDiseaseDetails = function(diseaseName) {
     </div>
   `;
 
-  DOM.resultsContent.innerHTML = html;
+  const modalBody = document.getElementById("modal-body");
+  const modal = document.getElementById("disease-modal");
 
-  // Ensure the results panel is visible on desktop as well
-  if (DOM.resultsContent.parentElement) {
-      DOM.resultsContent.parentElement.style.display = "block";
-  }
+  if (modalBody && modal) {
+      modalBody.innerHTML = html;
+      modal.classList.add("active");
 
-  // Scroll to results panel
-  document.querySelector('.results-panel').scrollIntoView({ behavior: 'smooth' });
-
-  if (window.innerWidth <= 768) {
-      document.querySelector('.results-panel').scrollIntoView({ behavior: 'smooth' });
+      // Prevent body scrolling when modal is open
+      document.body.style.overflow = "hidden";
   }
 };
+
+window.closeDiseaseModal = function() {
+    const modal = document.getElementById("disease-modal");
+    if (modal) {
+        modal.classList.remove("active");
+
+        // Restore body scrolling
+        if (window.innerWidth <= 768) {
+            document.body.style.overflow = "auto";
+        } else {
+            document.body.style.overflow = "hidden";
+        }
+    }
+};
+
+// Close modal when clicking outside
+document.addEventListener("click", (e) => {
+    const modal = document.getElementById("disease-modal");
+    if (modal && e.target === modal) {
+        closeDiseaseModal();
+    }
+});
+
 
 function renderResults(data) {
   window.lastResultData = data;
