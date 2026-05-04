@@ -1,11 +1,95 @@
 const DISEASE_DATABASE = {
   "skin": {
-    "Melanoma": {
-      "name": "Melanoma",
-      "description": "Melanoma is a type of cancer, typically skin cancer; it develops from the melanin-producing cells known as melanocytes. It typically occurs in the skin, but may rarely occur in the mouth, intestines, or eye. In very rare cases melanoma can also happen in the lung, which is known as primary pulmonary melanoma and only happens in 0.01% of primary lung tumors.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Melanoma.jpg/330px-Melanoma.jpg",
-      "causes": "Common causes of Melanoma can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Melanoma, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    "Acne": {
+      "name": "Acne",
+      "description": "Acne, also known as acne vulgaris, is a long-term skin condition that occurs when dead skin cells and sebum clog hair follicles. Typical features of the condition include blackheads or whiteheads, pimples, oily skin, and possible scarring. It primarily affects skin with a relatively high number of oil glands, including the face, upper part of the chest, and back. The resulting appearance can lead to lack of confidence, anxiety, reduced self-esteem, and, in extreme cases, depression or thoughts of suicide.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Acne_vulgaris_on_a_very_oily_skin.jpg/330px-Acne_vulgaris_on_a_very_oily_skin.jpg",
+      "causes": "Common causes of Acne can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Acne, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Dermatitis": {
+      "name": "Dermatitis",
+      "description": "Dermatitis is a term used for different types of skin inflammation, typically characterized by itchiness, redness and a rash. In cases of short duration, there may be small blisters, while in long-term cases the skin may become thickened. The area of skin involved can vary from small to covering the entire body. Dermatitis is also called eczema, but \"eczema\" is often used for the most common type of skin inflammation, atopic dermatitis.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Dermatitis2015.jpg/330px-Dermatitis2015.jpg",
+      "causes": "Common causes of Dermatitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Dermatitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Contact dermatitis": {
+      "name": "Contact dermatitis",
+      "description": "Contact dermatitis is a type of acute or chronic inflammation of the skin caused by exposure to chemical or physical agents. Symptoms of contact dermatitis can include itchy or dry skin, a red rash, bumps, blisters, or swelling. These rashes are not contagious or life-threatening, but can be very uncomfortable.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Contact_dermatitis_around_wound.jpg/330px-Contact_dermatitis_around_wound.jpg",
+      "causes": "Common causes of Contact dermatitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Contact dermatitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Rosacea": {
+      "name": "Rosacea",
+      "description": "Rosacea is a long-term skin condition that typically affects the face. It results in redness, pimples, swelling, and small and superficial dilated blood vessels. Often, the nose, cheeks, forehead, and chin are most involved. A red, enlarged nose may occur in severe disease, a condition known as rhinophyma.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Rosacea.jpg/330px-Rosacea.jpg",
+      "causes": "Common causes of Rosacea can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Rosacea, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Psoriasis": {
+      "name": "Psoriasis",
+      "description": "Psoriasis is a long-lasting, noncontagious autoimmune disease characterized by patches of abnormal skin. These areas are red, pink, or purple, dry, itchy, and scaly. Psoriasis varies in severity from small localized patches to complete body coverage. Injury to the skin can trigger psoriatic skin changes at that spot, which is known as the Koebner phenomenon.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Psoriasis_on_back1.jpg/330px-Psoriasis_on_back1.jpg",
+      "causes": "Common causes of Psoriasis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Psoriasis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Hives": {
+      "name": "Hives",
+      "description": "Hives, also known as urticaria, is a kind of skin rash with red or flesh-colored, raised, itchy bumps. Hives may burn or sting. The patches of rash may appear on different body parts, with variable duration from minutes to days, and typically do not leave any long-lasting skin change. Fewer than 5% of cases last for more than six weeks. The condition frequently recurs.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/EMminor2010.JPG/330px-EMminor2010.JPG",
+      "causes": "Common causes of Hives can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Hives, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Dermatophytosis": {
+      "name": "Dermatophytosis",
+      "description": "Dermatophytosis, also known as tinea and ringworm, is a fungal infection of the skin, that may affect skin, hair, and nails. Typically it results in a red, itchy, scaly, circular rash. Hair loss may occur in the area affected. Symptoms begin four to fourteen days after exposure. The types of dermatophytoses are typically named for the area of the body that they affect. Multiple areas can be affected at a given time.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Yeartinfection.JPG/330px-Yeartinfection.JPG",
+      "causes": "Common causes of Dermatophytosis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Dermatophytosis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Impetigo": {
+      "name": "Impetigo",
+      "description": "Impetigo is a contagious bacterial infection that involves the superficial skin. The most common presentation is yellowish crusts on the face, arms, or legs. Less commonly there may be large blisters which affect the groin or armpits. The lesions may be painful or itchy. Fever is uncommon.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Impetigo2020.jpg/330px-Impetigo2020.jpg",
+      "causes": "Common causes of Impetigo can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Impetigo, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Cellulitis": {
+      "name": "Cellulitis",
+      "description": "Cellulitis is usually a bacterial infection involving the inner layers of the skin. It specifically affects the dermis and subcutaneous fat. Signs and symptoms include an area of redness which increases in size over a few days. The borders of the area of redness are generally not sharp and the skin may be swollen. While the redness often turns white when pressure is applied, this is not always the case. The area of infection is usually painful. Lymphatic vessels may occasionally be involved, and the person may have a fever and feel tired.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cellulitis3.jpg/330px-Cellulitis3.jpg",
+      "causes": "Common causes of Cellulitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Cellulitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Scabies": {
+      "name": "Scabies",
+      "description": "Scabies is a contagious human skin infestation by the tiny (0.2\u20130.45\u00a0mm) mite Sarcoptes scabiei, variety hominis. The word is from Latin: scabere, lit.\u2009'to scratch'. It is a particular public health problem in crowded settings such as care homes, schools, refugee camps, prisons, and hospitals. The most common symptoms are severe itchiness and a pimple-like rash. Occasionally, tiny burrows may appear on the skin from eggs that are about to hatch. In a first-ever infection, the infected person usually develops symptoms within two to six weeks. During a second infection, symptoms may begin within 24 hours. These symptoms can be present across most of the body or just in certain areas such as the wrists, between fingers, or along the waistline. The head may be affected, but this is typically only in young children. The itch is often worse at night. Scratching may cause skin breakdown and an additional bacterial infection in the skin.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Scabies-burrow.jpg/330px-Scabies-burrow.jpg",
+      "causes": "Common causes of Scabies can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Scabies, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Chickenpox": {
+      "name": "Chickenpox",
+      "description": "Chickenpox, also known as varicella, is a highly contagious disease caused by varicella zoster virus (VZV), a member of the herpesvirus family. The disease results in a characteristic skin rash that forms small, itchy blisters, which eventually scab over. It usually starts on the chest, back, and face. It then spreads to the rest of the body. The rash and other symptoms, such as fever, tiredness, and headaches, usually last five to seven days. Complications may occasionally include pneumonia, inflammation of the brain, and bacterial skin infections. The disease is usually more severe in adults than in children.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Varicela_Aranzales.jpg/330px-Varicela_Aranzales.jpg",
+      "causes": "Common causes of Chickenpox can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Chickenpox, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Shingles": {
+      "name": "Shingles",
+      "description": "Shingles, also known as herpes zoster or zona, is a viral disease characterized by a painful skin rash with blisters in a localized area. Typically the rash occurs in a single, wide mark either on the left or right side of the body or face. Two to four days before the rash occurs, there may be tingling or local pain in the area. Other common symptoms are fever, headache, and tiredness. The rash usually heals within two to four weeks, but some people develop ongoing nerve pain which can last for months or years, a condition called postherpetic neuralgia (PHN). In those with poor immune function the rash may occur widely. If the rash involves the eye, vision loss may occur.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Herpes_zoster_neck.png/330px-Herpes_zoster_neck.png",
+      "causes": "Common causes of Shingles can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Shingles, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Measles": {
+      "name": "Measles",
+      "description": "Measles is a highly contagious, vaccine-preventable infectious disease caused by measles virus. Other names include morbilli, rubeola, 9-day measles, red measles, and English measles.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/RougeoleDP.jpg/330px-RougeoleDP.jpg",
+      "causes": "Common causes of Measles can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Measles, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
     "Basal-cell carcinoma": {
       "name": "Basal-cell carcinoma",
@@ -18,99 +102,15 @@ const DISEASE_DATABASE = {
       "name": "Squamous-cell carcinoma",
       "description": "Squamous-cell carcinoma (SCC), also known as epidermoid carcinoma, comprises a number of different types of cancer that begin in squamous cells. These cells form on the surface of the skin, on the lining of hollow organs in the body, and on the lining of the respiratory and digestive tracts.",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Histopathology_of_squamous-cell_carcinoma.png/330px-Histopathology_of_squamous-cell_carcinoma.png",
-      "causes": "Common causes of Squamous-cell carcinoma can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "causes": "Common causes of Squamous-cell carcinoma can include genetic factors, environmental exposure, infections, or underlying health conditions.",
       "precautions": "To prevent or manage Squamous-cell carcinoma, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
-    "Dermatitis": {
-      "name": "Dermatitis",
-      "description": "Dermatitis is a term used for different types of skin inflammation, typically characterized by itchiness, redness and a rash. In cases of short duration, there may be small blisters, while in long-term cases the skin may become thickened. The area of skin involved can vary from small to covering the entire body. Dermatitis is also called eczema, but \"eczema\" is often used for the most common type of skin inflammation, atopic dermatitis.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Dermatitis2015.jpg/330px-Dermatitis2015.jpg",
-      "causes": "Common causes of Dermatitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Dermatitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Psoriasis": {
-      "name": "Psoriasis",
-      "description": "Psoriasis is a long-lasting, noncontagious autoimmune disease characterized by patches of abnormal skin. These areas are red, pink, or purple, dry, itchy, and scaly. Psoriasis varies in severity from small localized patches to complete body coverage. Injury to the skin can trigger psoriatic skin changes at that spot, which is known as the Koebner phenomenon.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Psoriasis_on_back1.jpg/330px-Psoriasis_on_back1.jpg",
-      "causes": "Common causes of Psoriasis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Psoriasis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Contact dermatitis": {
-      "name": "Contact dermatitis",
-      "description": "Contact dermatitis is a type of acute or chronic inflammation of the skin caused by exposure to chemical or physical agents. Symptoms of contact dermatitis can include itchy or dry skin, a red rash, bumps, blisters, or swelling. These rashes are not contagious or life-threatening, but can be very uncomfortable.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Contact_dermatitis_around_wound.jpg/330px-Contact_dermatitis_around_wound.jpg",
-      "causes": "Common causes of Contact dermatitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Contact dermatitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Dermatophytosis": {
-      "name": "Dermatophytosis",
-      "description": "Dermatophytosis, also known as tinea and ringworm, is a fungal infection of the skin, that may affect skin, hair, and nails. Typically it results in a red, itchy, scaly, circular rash. Hair loss may occur in the area affected. Symptoms begin four to fourteen days after exposure. The types of dermatophytoses are typically named for the area of the body that they affect. Multiple areas can be affected at a given time.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Yeartinfection.JPG/330px-Yeartinfection.JPG",
-      "causes": "Common causes of Dermatophytosis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Dermatophytosis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Hives": {
-      "name": "Hives",
-      "description": "Hives, also known as urticaria, is a kind of skin rash with red or flesh-colored, raised, itchy bumps. Hives may burn or sting. The patches of rash may appear on different body parts, with variable duration from minutes to days, and typically do not leave any long-lasting skin change. Fewer than 5% of cases last for more than six weeks. The condition frequently recurs.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/EMminor2010.JPG/330px-EMminor2010.JPG",
-      "causes": "Common causes of Hives can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Hives, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Rosacea": {
-      "name": "Rosacea",
-      "description": "Rosacea is a long-term skin condition that typically affects the face. It results in redness, pimples, swelling, and small and superficial dilated blood vessels. Often, the nose, cheeks, forehead, and chin are most involved. A red, enlarged nose may occur in severe disease, a condition known as rhinophyma.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Rosacea.jpg/330px-Rosacea.jpg",
-      "causes": "Common causes of Rosacea can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Rosacea, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Chickenpox": {
-      "name": "Chickenpox",
-      "description": "Chickenpox, also known as varicella, is a highly contagious disease caused by varicella zoster virus (VZV), a member of the herpesvirus family. The disease results in a characteristic skin rash that forms small, itchy blisters, which eventually scab over. It usually starts on the chest, back, and face. It then spreads to the rest of the body. The rash and other symptoms, such as fever, tiredness, and headaches, usually last five to seven days. Complications may occasionally include pneumonia, inflammation of the brain, and bacterial skin infections. The disease is usually more severe in adults than in children.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Varicela_Aranzales.jpg/330px-Varicela_Aranzales.jpg",
-      "causes": "Common causes of Chickenpox can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Chickenpox, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Measles": {
-      "name": "Measles",
-      "description": "Measles is a highly contagious, vaccine-preventable infectious disease caused by measles virus. Other names include morbilli, rubeola, 9-day measles, red measles, and English measles.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/RougeoleDP.jpg/330px-RougeoleDP.jpg",
-      "causes": "Common causes of Measles can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Measles, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Shingles": {
-      "name": "Shingles",
-      "description": "Shingles, also known as herpes zoster or zona, is a viral disease characterized by a painful skin rash with blisters in a localized area. Typically the rash occurs in a single, wide mark either on the left or right side of the body or face. Two to four days before the rash occurs, there may be tingling or local pain in the area. Other common symptoms are fever, headache, and tiredness. The rash usually heals within two to four weeks, but some people develop ongoing nerve pain which can last for months or years, a condition called postherpetic neuralgia (PHN). In those with poor immune function the rash may occur widely. If the rash involves the eye, vision loss may occur.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Herpes_zoster_neck.png/330px-Herpes_zoster_neck.png",
-      "causes": "Common causes of Shingles can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Shingles, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Impetigo": {
-      "name": "Impetigo",
-      "description": "Impetigo is a contagious bacterial infection that involves the superficial skin. The most common presentation is yellowish crusts on the face, arms, or legs. Less commonly there may be large blisters which affect the groin or armpits. The lesions may be painful or itchy. Fever is uncommon.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Impetigo2020.jpg/330px-Impetigo2020.jpg",
-      "causes": "Common causes of Impetigo can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Impetigo, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Scabies": {
-      "name": "Scabies",
-      "description": "Scabies is a contagious human skin infestation by the tiny (0.2\u20130.45\u00a0mm) mite Sarcoptes scabiei, variety hominis. The word is from Latin: scabere, lit.\u2009'to scratch'. It is a particular public health problem in crowded settings such as care homes, schools, refugee camps, prisons, and hospitals. The most common symptoms are severe itchiness and a pimple-like rash. Occasionally, tiny burrows may appear on the skin from eggs that are about to hatch. In a first-ever infection, the infected person usually develops symptoms within two to six weeks. During a second infection, symptoms may begin within 24 hours. These symptoms can be present across most of the body or just in certain areas such as the wrists, between fingers, or along the waistline. The head may be affected, but this is typically only in young children. The itch is often worse at night. Scratching may cause skin breakdown and an additional bacterial infection in the skin.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Scabies-burrow.jpg/330px-Scabies-burrow.jpg",
-      "causes": "Common causes of Scabies can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Scabies, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Cellulitis": {
-      "name": "Cellulitis",
-      "description": "Cellulitis is usually a bacterial infection involving the inner layers of the skin. It specifically affects the dermis and subcutaneous fat. Signs and symptoms include an area of redness which increases in size over a few days. The borders of the area of redness are generally not sharp and the skin may be swollen. While the redness often turns white when pressure is applied, this is not always the case. The area of infection is usually painful. Lymphatic vessels may occasionally be involved, and the person may have a fever and feel tired.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Cellulitis3.jpg/330px-Cellulitis3.jpg",
-      "causes": "Common causes of Cellulitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Cellulitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Acne": {
-      "name": "Acne",
-      "description": "Acne, also known as acne vulgaris, is a long-term skin condition that occurs when dead skin cells and sebum clog hair follicles. Typical features of the condition include blackheads or whiteheads, pimples, oily skin, and possible scarring. It primarily affects skin with a relatively high number of oil glands, including the face, upper part of the chest, and back. The resulting appearance can lead to lack of confidence, anxiety, reduced self-esteem, and, in extreme cases, depression or thoughts of suicide.",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Acne_vulgaris_on_a_very_oily_skin.jpg/330px-Acne_vulgaris_on_a_very_oily_skin.jpg",
-      "causes": "Common causes of Acne can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
-      "precautions": "To prevent or manage Acne, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    "Melanoma": {
+      "name": "Melanoma",
+      "description": "Melanoma is a type of cancer, typically skin cancer; it develops from the melanin-producing cells known as melanocytes. It typically occurs in the skin, but may rarely occur in the mouth, intestines, or eye. In very rare cases melanoma can also happen in the lung, which is known as primary pulmonary melanoma and only happens in 0.01% of primary lung tumors.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Melanoma.jpg/330px-Melanoma.jpg",
+      "causes": "Common causes of Melanoma can include genetic factors, environmental exposure, infections, or underlying health conditions.",
+      "precautions": "To prevent or manage Melanoma, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
     "Vitiligo": {
       "name": "Vitiligo",
@@ -118,6 +118,48 @@ const DISEASE_DATABASE = {
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Vitiligo2.JPG/330px-Vitiligo2.JPG",
       "causes": "Common causes of Vitiligo can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
       "precautions": "To prevent or manage Vitiligo, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Lupus erythematosus": {
+      "name": "Lupus erythematosus",
+      "description": "Lupus erythematosus is a collection of autoimmune diseases in which the human immune system becomes hyperactive and attacks healthy tissues. Symptoms of these diseases can affect many different body systems, including joints, skin, kidneys, blood cells, heart, and lungs. The most common and most severe form is systemic lupus erythematosus.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lupus_erythematosus%2C_Atlas_der_Hautkrankheiten.jpg/330px-Lupus_erythematosus%2C_Atlas_der_Hautkrankheiten.jpg",
+      "causes": "Common causes of Lupus erythematosus can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Lupus erythematosus, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Lichen planus": {
+      "name": "Lichen planus",
+      "description": "Lichen planus (LP) is a chronic inflammatory and autoimmune disease that affects the skin, nails, hair, and mucous membranes. It is not an actual lichen, but is named for its appearance. It is characterized by polygonal, flat-topped, violaceous papules and plaques with overlying, reticulated, fine white scale, commonly affecting dorsal hands, flexural wrists and forearms, trunk, anterior lower legs, and oral mucosa. The hue may be gray-brown in people with darker skin. Although there is a broad clinical range of LP manifestations, the skin and oral cavity remain the major sites of involvement. The cause is unknown, but it is thought to be the result of an autoimmune process with an unknown initial trigger. There is no cure, but many medications and procedures have been used in efforts to control the symptoms.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Lichen_planus.jpg/330px-Lichen_planus.jpg",
+      "causes": "Common causes of Lichen planus can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Lichen planus, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Hidradenitis suppurativa": {
+      "name": "Hidradenitis suppurativa",
+      "description": "Hidradenitis suppurativa (HS), sometimes known as acne inversa or Verneuil's disease, is a long-term dermatological condition characterized by the occurrence of inflamed and swollen lumps. These are typically painful and break open, releasing fluid or pus. The areas most commonly affected are the underarms, under the breasts, perineum, buttocks, and the groin. Scar tissue remains after healing. HS may significantly limit many everyday activities, for instance, walking, hugging, moving, and sitting down. Sitting disability may occur in patients with lesions in the sacral, gluteal, perineal, femoral, groin or genital regions. Prolonged periods of sitting down can also worsen the condition of the skin of these patients.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Hidradenitis_suppurativa_%28stage_II%29_in_axilla.jpg/330px-Hidradenitis_suppurativa_%28stage_II%29_in_axilla.jpg",
+      "causes": "Common causes of Hidradenitis suppurativa can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Hidradenitis suppurativa, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Pemphigus": {
+      "name": "Pemphigus",
+      "description": "Pemphigus is a rare group of blistering autoimmune diseases that affect the skin and mucous membranes. The name is derived from the Greek root pemphix, meaning \"blister\".",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Riehl_Zumbusch_Tafel_XXXV_%282%29.jpg/330px-Riehl_Zumbusch_Tafel_XXXV_%282%29.jpg",
+      "causes": "Common causes of Pemphigus can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Pemphigus, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Ichthyosis": {
+      "name": "Ichthyosis",
+      "description": "Ichthyosis is a family of genetic skin disorders characterized by dry, thickened, scaly skin. The more than 20 types of ichthyosis range in severity of symptoms, outward appearance, underlying genetic cause and mode of inheritance. Ichthyosis comes from Greek  \u1f30\u03c7\u03b8\u03cd\u03c2 (ichthys) 'fish', since dry, scaly skin is the defining feature of all forms of ichthyosis.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Ichthyosis_%281%29.jpg/330px-Ichthyosis_%281%29.jpg",
+      "causes": "Common causes of Ichthyosis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Ichthyosis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Epidermolysis bullosa": {
+      "name": "Epidermolysis bullosa",
+      "description": "Epidermolysis bullosa (EB) is a group of rare medical conditions that result in easy blistering of the skin and mucous membranes. Blisters occur with minor trauma or friction and are painful. Its severity can range from mild to fatal. Inherited EB is a rare disease with a prevalence in the United States of 8.2 per million live births. Those with mild cases may not develop symptoms until they start to crawl or walk. Complications may include esophageal narrowing, squamous cell skin cancer, and the need for amputations.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Iraqi-boy-epidermolysis_bullosa-090216-M-8096M-001.jpg/330px-Iraqi-boy-epidermolysis_bullosa-090216-M-8096M-001.jpg",
+      "causes": "Common causes of Epidermolysis bullosa can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Epidermolysis bullosa, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     }
   },
   "eye": {
@@ -127,6 +169,13 @@ const DISEASE_DATABASE = {
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/An_eye_with_viral_conjunctivitis.jpg/330px-An_eye_with_viral_conjunctivitis.jpg",
       "causes": "Common causes of Conjunctivitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
       "precautions": "To prevent or manage Conjunctivitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Dry eye syndrome": {
+      "name": "Dry eye syndrome",
+      "description": "Dry eye disease (DED), also known as keratoconjunctivitis sicca, is the condition of having dry eyes. The term dry eye syndrome was formerly used, but is now avoided following advances that have established it as a distinct disease entity.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/LG3-LRG.jpg/330px-LG3-LRG.jpg",
+      "causes": "Common causes of Dry eye syndrome can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Dry eye syndrome, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
     "Cataract": {
       "name": "Cataract",
@@ -144,73 +193,108 @@ const DISEASE_DATABASE = {
     },
     "Diabetic retinopathy": {
       "name": "Diabetic retinopathy",
-      "description": "Information about Diabetic retinopathy is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Diabetic+retinopathy",
-      "causes": "Common causes of Diabetic retinopathy can include genetic factors, environmental exposure, infections, or underlying health conditions.",
+      "description": "Diabetic retinopathy is a medical condition in which damage occurs to the retina due to diabetes. It is a leading cause of blindness in developed countries and one of the leading causes of sight loss in the world, even though there are many new therapies and improved treatments for helping people living with diabetes.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Fundus_-_diabetic_retinopathy.png/330px-Fundus_-_diabetic_retinopathy.png",
+      "causes": "Common causes of Diabetic retinopathy can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
       "precautions": "To prevent or manage Diabetic retinopathy, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
     "Macular degeneration": {
       "name": "Macular degeneration",
-      "description": "Information about Macular degeneration is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Macular+degeneration",
+      "description": "Macular degeneration, also known as age-related macular degeneration, is a medical condition which may result in blurred or no vision in the center of the visual field. Early on, there are often no symptoms. Some people experience a gradual worsening of vision that may affect one or both eyes. While it does not result in complete blindness, loss of central vision can make it hard to recognize faces, drive, read, or perform other activities of daily life. Visual hallucinations may also occur.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Intermediate_age_related_macular_degeneration.jpg/330px-Intermediate_age_related_macular_degeneration.jpg",
       "causes": "Common causes of Macular degeneration can include genetic factors, environmental exposure, infections, or underlying health conditions.",
       "precautions": "To prevent or manage Macular degeneration, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
-    "Dry eye syndrome": {
-      "name": "Dry eye syndrome",
-      "description": "Information about Dry eye syndrome is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Dry+eye+syndrome",
-      "causes": "Common causes of Dry eye syndrome can include genetic factors, environmental exposure, infections, or underlying health conditions.",
-      "precautions": "To prevent or manage Dry eye syndrome, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Pterygium": {
-      "name": "Pterygium",
-      "description": "Information about Pterygium is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Pterygium",
-      "causes": "Common causes of Pterygium can include genetic factors, environmental exposure, infections, or underlying health conditions.",
-      "precautions": "To prevent or manage Pterygium, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Jaundice": {
-      "name": "Jaundice",
-      "description": "Information about Jaundice is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Jaundice",
-      "causes": "Common causes of Jaundice can include genetic factors, environmental exposure, infections, or underlying health conditions.",
-      "precautions": "To prevent or manage Jaundice, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Pallor": {
-      "name": "Pallor",
-      "description": "Information about Pallor is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Pallor",
-      "causes": "Common causes of Pallor can include genetic factors, environmental exposure, infections, or underlying health conditions.",
-      "precautions": "To prevent or manage Pallor, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Corneal ulcer": {
-      "name": "Corneal ulcer",
-      "description": "Information about Corneal ulcer is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Corneal+ulcer",
-      "causes": "Common causes of Corneal ulcer can include genetic factors, environmental exposure, infections, or underlying health conditions.",
-      "precautions": "To prevent or manage Corneal ulcer, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
-    "Uveitis": {
-      "name": "Uveitis",
-      "description": "Information about Uveitis is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Uveitis",
-      "causes": "Common causes of Uveitis can include genetic factors, environmental exposure, infections, or underlying health conditions.",
-      "precautions": "To prevent or manage Uveitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
-    },
     "Pinguecula": {
       "name": "Pinguecula",
-      "description": "Information about Pinguecula is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Pinguecula",
+      "description": "A pinguecula is a common type of conjunctival stromal degeneration in the eye. It appears as an elevated yellow-white plaque in the bulbar conjunctiva near the limbus. Calcification may also be seen occasionally.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/PRE-OPERATIVE_PINGUECULA.JPG/330px-PRE-OPERATIVE_PINGUECULA.JPG",
       "causes": "Common causes of Pinguecula can include genetic factors, environmental exposure, infections, or underlying health conditions.",
       "precautions": "To prevent or manage Pinguecula, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     },
+    "Pterygium": {
+      "name": "Pterygium",
+      "description": "A pterygium is any wing-like triangular membrane occurring in the neck, eyes, knees, elbows, ankles or digits.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Pterygium_Slitlamp.jpg/330px-Pterygium_Slitlamp.jpg",
+      "causes": "Common causes of Pterygium can include genetic factors, environmental exposure, infections, or underlying health conditions.",
+      "precautions": "To prevent or manage Pterygium, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
     "Blepharitis": {
       "name": "Blepharitis",
-      "description": "Information about Blepharitis is currently unavailable.",
-      "image": "https://placehold.co/400x300/00f0ff/0a0a0f?text=Blepharitis",
+      "description": "Blepharitis, sometimes known as granulated eyelids, is one of the most common ocular conditions characterized by inflammation, scaling, reddening, and crusting of the eyelid. This condition may also cause swelling, burning, itching, or a grainy sensation when introducing foreign objects or substances to the eye. Although blepharitis by itself is not sight-threatening, it can lead to permanent alterations of the eyelid margin. The primary cause is bacteria and inflammation from congested meibomian oil glands at the base of each eyelash. Other conditions may give rise to blepharitis, whether they be infectious or noninfectious, including, but not limited to, bacterial infections or allergies.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Infant_with_blepharitis_on_the_right_side.jpg/330px-Infant_with_blepharitis_on_the_right_side.jpg",
       "causes": "Common causes of Blepharitis can include genetic factors, environmental exposure, infections, or underlying health conditions.",
       "precautions": "To prevent or manage Blepharitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Uveitis": {
+      "name": "Uveitis",
+      "description": "Uveitis is inflammation of the uvea, the pigmented layer of the eye between the inner retina and the outer fibrous layer composed of the sclera and cornea. The uvea consists of the middle layer of pigmented vascular structures of the eye and includes the iris, ciliary body, and choroid. Uveitis is described anatomically, by the part of the eye affected, as anterior, intermediate or posterior, or panuveitic if all parts are involved. Anterior uveitis (iridocyclitis) is the most common, with the incidence of uveitis overall affecting approximately 1:4500, most commonly those between the ages of 20\u201360. Symptoms include eye pain, eye redness, floaters and blurred vision, and ophthalmic examination may show dilated ciliary blood vessels and the presence of cells in the anterior chamber. Uveitis may arise spontaneously, have a genetic component, or be associated with an autoimmune disease or infection. While the eye is a relatively protected environment, its immune mechanisms may be activated resulting in inflammation and tissue destruction associated with T-cell activation.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Keratic_precipitate2.jpg/330px-Keratic_precipitate2.jpg",
+      "causes": "Common causes of Uveitis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Uveitis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Corneal ulcer": {
+      "name": "Corneal ulcer",
+      "description": "Corneal ulcer, often resulting from keratitis is an inflammatory or, more seriously, infective condition of the cornea involving disruption of its epithelial layer with involvement of the corneal stroma. It is a common condition in humans particularly in the tropics and in farming. In developing countries, children afflicted by vitamin A deficiency are at high risk for corneal ulcer and may become blind in both eyes persisting throughout life. In ophthalmology, a corneal ulcer usually refers to having an infection, while the term corneal abrasion refers more to a scratch injury.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Corneal_Ulcer.png/330px-Corneal_Ulcer.png",
+      "causes": "Common causes of Corneal ulcer can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Corneal ulcer, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Retinal detachment": {
+      "name": "Retinal detachment",
+      "description": "Retinal detachment is a condition where the retina pulls away from the tissue underneath it. It may start in a small area, but without quick treatment, it can spread across the entire retina, leading to serious vision loss and possibly blindness. Retinal detachment is a medical emergency that requires surgery.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Human_eye_cross_section_detached_retina.svg/330px-Human_eye_cross_section_detached_retina.svg.png",
+      "causes": "Common causes of Retinal detachment can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Retinal detachment, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Strabismus": {
+      "name": "Strabismus",
+      "description": "Strabismus is an eye disorder in which the eyes do not properly align with each other when looking at an object. The eye that is pointed at an object can alternate. The condition may be present occasionally or constantly. If present during a large part of childhood, it may result in amblyopia and loss of depth perception. If onset is during adulthood, it is more likely to result in double vision.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Strabismus.jpg/330px-Strabismus.jpg",
+      "causes": "Common causes of Strabismus can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Strabismus, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Amblyopia": {
+      "name": "Amblyopia",
+      "description": "Amblyopia, also called lazy eye, is a disorder of sight in which the brain fails to fully process input from one eye and over time favors the other eye. It results in decreased vision in an eye that typically appears normal in other aspects. Amblyopia is the most common cause of decreased vision in a single eye among children and younger adults.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Child_eyepatch.jpg/330px-Child_eyepatch.jpg",
+      "causes": "Common causes of Amblyopia can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Amblyopia, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Keratoconus": {
+      "name": "Keratoconus",
+      "description": "Keratoconus is an eye disorder in which the cornea, the transparent front part of the eye, gradually thins and bulges outward into a cone shape. This causes distorted vision, including blurry vision, double vision, increased nearsightedness, irregular astigmatism, and light sensitivity, which can reduce quality of life. Both eyes are usually affected.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Keratoconus-with-Munsons-sign-USA-1965.jpg/330px-Keratoconus-with-Munsons-sign-USA-1965.jpg",
+      "causes": "Common causes of Keratoconus can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Keratoconus, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Optic neuritis": {
+      "name": "Optic neuritis",
+      "description": "Optic neuritis (ON) is a debilitating condition that is defined as inflammation of cranial nerve II which results in disruption of the neurologic pathways that allow visual sensory information received by the retina to be able to be transmitted to the visual cortex of the brain. This disorder of the optic nerve may arise through various pathophysiologic mechanisms, such as through demyelination or inflammation, leading to partial or total loss of vision. Optic neuritis may be a result of standalone idiopathic disease, but is often a manifestation that occurs secondary to an underlying disease.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Optic_Neuritis.png/330px-Optic_Neuritis.png",
+      "causes": "Common causes of Optic neuritis can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Optic neuritis, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Retinitis pigmentosa": {
+      "name": "Retinitis pigmentosa",
+      "description": "Retinitis pigmentosa (RP) is a member of a group of genetic disorders called inherited retinal dystrophy (IRD) that cause loss of vision. Symptoms include trouble seeing at night and decreasing peripheral vision. As peripheral vision worsens, people may experience \"tunnel vision\". Complete blindness is uncommon. Onset of symptoms is generally gradual and often begins in childhood.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Fundus_of_patient_with_retinitis_pigmentosa%2C_mid_stage.jpg/330px-Fundus_of_patient_with_retinitis_pigmentosa%2C_mid_stage.jpg",
+      "causes": "Common causes of Retinitis pigmentosa can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Retinitis pigmentosa, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Trachoma": {
+      "name": "Trachoma",
+      "description": "Trachoma is an infectious disease caused by the bacterium Chlamydia trachomatis. The infection causes a roughening of the inner surface of the eyelids. This roughening can lead to eye pain, breakdown of the outer surface or cornea of the eyes, and eventual blindness. Untreated, repeated trachoma infections can result in a form of permanent blindness when the eyelids turn inward.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Entropion_and_trichiasis_secondary_to_trachoma_A44-652-11.jpg/330px-Entropion_and_trichiasis_secondary_to_trachoma_A44-652-11.jpg",
+      "causes": "Common causes of Trachoma can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Trachoma, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
+    },
+    "Retinoblastoma": {
+      "name": "Retinoblastoma",
+      "description": "Retinoblastoma (Rb) is a rare form of cancer that rapidly develops from the immature cells of a retina, the light-detecting tissue of the eye. It is the most common primary malignant intraocular cancer in children, and 80% of retinoblastoma cases are first detected in those under 3 years old.",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Retinoblastoma_in_enucleated_eyeball.jpg/330px-Retinoblastoma_in_enucleated_eyeball.jpg",
+      "causes": "Common causes of Retinoblastoma can include genetic factors, environmental exposure, infections, or underlying health conditions. Please consult a specialist for an accurate diagnosis.",
+      "precautions": "To prevent or manage Retinoblastoma, it is recommended to maintain good hygiene, avoid known triggers, and seek professional medical advice."
     }
   }
 };

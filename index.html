@@ -27,9 +27,13 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
+
     <div class="app-container">
+      <div class="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
       <!-- Sidebar Navigation -->
-      <aside class="sidebar glass-panel">
+      <aside id="sidebar" class="sidebar glass-panel">
+        <button class="close-sidebar-btn" onclick="toggleMobileSidebar()" style="display:none; position:absolute; top:10px; right:10px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;"><i class="fas fa-times"></i></button>
         <div class="logo">
           <i class="ph-fill ph-heartbeat"></i>
           <span>VisionDx</span>
@@ -83,7 +87,12 @@
 
       <!-- Main Content Area -->
       <main class="main-content">
+
         <header class="top-header">
+          <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+            <i class="ph ph-list"></i>
+          </button>
+
           <div style="flex: 1">
             <h1 id="page-title">Eye Disease Predictor</h1>
             <p id="page-subtitle">
