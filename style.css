@@ -895,7 +895,12 @@ button {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 9999;
+  z-index: 99999; /* Ensure higher z-index to receive clicks */
+  pointer-events: none; /* Let clicks pass through container */
+}
+
+.radial-toggle-btn, .radial-menu {
+  pointer-events: auto; /* Re-enable clicks on actual interactive elements */
 }
 
 @media (max-width: 768px) {
@@ -950,7 +955,7 @@ button {
   transform: translateY(-50%);
   width: 100px;
   height: 200px;
-  z-index: 9999;
+  z-index: 100001; /* Must be higher than the toggle button */
 }
 
 .radial-menu-container.active .radial-menu {
@@ -1133,4 +1138,12 @@ button {
   color: var(--primary);
   border-color: var(--primary);
   font-weight: 600;
+}
+
+.disease-gallery::-webkit-scrollbar {
+  height: 4px;
+}
+.disease-gallery::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
 }

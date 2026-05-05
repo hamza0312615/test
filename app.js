@@ -245,7 +245,7 @@ function renderManualDiseaseSlider() {
   diseases.forEach((disease) => {
     html += `
       <div class="disease-card vertical-card">
-        <img src="${disease.image}" alt="${disease.name}" class="disease-img" onerror="this.src='https://placehold.co/400x300?text=${encodeURIComponent(disease.name)}'">
+        <img src="${disease.images[0]}" alt="${disease.name}" class="disease-img" onerror="this.src='https://placehold.co/400x300?text=${encodeURIComponent(disease.name)}'">
         <div class="disease-info">
           <h3>${disease.name}</h3>
           <p>${disease.description}</p>
@@ -760,7 +760,9 @@ window.viewManualDiseaseDetails = function(diseaseName) {
 
   const html = `
     <div style="border-left: 4px solid var(--primary); padding-left: 15px;">
-        <img src="${disease.image}" alt="${disease.name}" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 15px;">
+        <div class="disease-gallery" style="display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; scroll-snap-type: x mandatory; padding-bottom: 5px;">
+            ${disease.images.map(img => `<img src="${img}" alt="${disease.name}" style="flex: 0 0 90%; max-height: 250px; object-fit: cover; border-radius: var(--radius-sm); scroll-snap-align: start; border: 1px solid var(--panel-border);">`).join('')}
+        </div>
         <h2 style="margin: 0 0 10px 0; font-size: 1.8rem; color: var(--primary);">${disease.name}</h2>
 
         <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;">Description:</strong>
@@ -896,16 +898,17 @@ function renderResults(data) {
         extraDiseaseInfo = `
             <div style="margin-top: 15px; border-top: 1px solid var(--panel-border); padding-top: 15px;">
                 <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px;">
-                    <img src="${dInfo.image}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink: 0;" />
+                    <img src="${dInfo.images[0]}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink: 0;" />
                     <div>
                         <strong style="font-size: 0.85rem; color: var(--text-main); display:block; margin-bottom: 4px;"><i class="ph-fill ph-warning-circle" style="color: var(--warning);"></i> Causes:</strong>
                         <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${dInfo.causes}</p>
                     </div>
                 </div>
-                <div>
+                <div style="margin-bottom: 15px;">
                     <strong style="font-size: 0.85rem; color: var(--text-main); display:block; margin-bottom: 4px;"><i class="ph-fill ph-shield-check" style="color: var(--success);"></i> Precautions:</strong>
                     <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${dInfo.precautions}</p>
                 </div>
+                <button onclick="viewManualDiseaseDetails('${primary.name.replace(/'/g, "\'")}')" class="action-btn" style="width: 100%;"><i class="ph-fill ph-info"></i> View Full Disease Information</button>
             </div>
         `;
     }
