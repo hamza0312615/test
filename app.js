@@ -777,6 +777,26 @@ window.viewManualDiseaseDetails = function(diseaseName) {
         <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid var(--success); padding-left: 10px; margin-bottom: 15px;">
             ${disease.precautions}
         </p>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;"><i class="ph-fill ph-clock" style="color: var(--secondary);"></i> Early Implications:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid var(--secondary); padding-left: 10px; margin-bottom: 15px;">
+            ${disease.early_implications}
+        </p>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;"><i class="ph-fill ph-first-aid" style="color: #00f0ff;"></i> Before Consulting a Doctor:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid #00f0ff; padding-left: 10px; margin-bottom: 15px;">
+            ${disease.pre_consultation}
+        </p>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;"><i class="ph-fill ph-virus" style="color: var(--danger);"></i> Major Cause of Spread:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid var(--danger); padding-left: 10px; margin-bottom: 15px;">
+            ${disease.cause_of_spread}
+        </p>
+
+        <strong style="font-size: 0.95rem; color: var(--text-main); display:block; margin-bottom: 5px;"><i class="ph-fill ph-hand-soap" style="color: var(--success);"></i> Preventing Spread:</strong>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; border-left: 2px solid var(--success); padding-left: 10px; margin-bottom: 15px;">
+            ${disease.preventing_spread}
+        </p>
     </div>
   `;
 
