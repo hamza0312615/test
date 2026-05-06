@@ -713,6 +713,7 @@ async function performAnalysis(manualMedicineName = null) {
             }
           }
         }
+      } // CLOSE missing bracket for GEMINI FALLBACK
       } else {
         DOM.resultsContent.innerHTML = `
                     <div class="empty-results">
