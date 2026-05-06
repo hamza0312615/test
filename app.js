@@ -414,15 +414,48 @@ async function analyzeImageWithGemini(imageDataUrl, mode) {
     }
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-    // Extract base64 data correctly (remove data:image/jpeg;base64, prefix)
+    // Extract base64 data correctly
+    const mimeMatch = imageDataUrl.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,/);
+    const mimeType = mimeMatch ? mimeMatch[1] : "image/jpeg";
     const base64Data = imageDataUrl.split(',')[1];
 
     // Construct prompt based on mode
     let prompt = "";
     if (mode === "eye") {
-        prompt = "Analyze this image of an eye. What is the single most likely medical condition or disease shown? Reply with ONLY the name of the disease, nothing else. Pick from common diseases like Conjunctivitis, Cataract, Glaucoma, etc. If it looks healthy, reply 'Healthy'.";
-    } else {
-        prompt = "Analyze this image of skin. What is the single most likely dermatological condition or disease shown? Reply with ONLY the name of the disease, nothing else. Pick from common diseases like Melanoma, Eczema, Psoriasis, Ringworm, etc. If it looks healthy, reply 'Healthy'.";
+        prompt = `Analyze this image of an eye. Identify the most likely medical condition or disease shown.
+        Respond ONLY with a valid JSON object strictly matching this format:
+        {
+          "name": "Name of the disease (e.g., Cataract, Conjunctivitis, or Healthy)",
+          "description": "A detailed description of the condition",
+          "causes": "Primary causes of this condition",
+          "precautions": "Precautions to take",
+          "early_implications": "Early signs and implications",
+          "pre_consultation": "What to do before seeing a doctor",
+          "cause_of_spread": "How it spreads or worsens",
+          "preventing_spread": "How to prevent spreading or worsening"
+        }`;
+    } else if (mode === "skin") {
+        prompt = `Analyze this image of skin. Identify the most likely dermatological condition or disease shown.
+        Respond ONLY with a valid JSON object strictly matching this format:
+        {
+          "name": "Name of the disease (e.g., Melanoma, Psoriasis, or Healthy)",
+          "description": "A detailed description of the condition",
+          "causes": "Primary causes of this condition",
+          "precautions": "Precautions to take",
+          "early_implications": "Early signs and implications",
+          "pre_consultation": "What to do before seeing a doctor",
+          "cause_of_spread": "How it spreads or worsens",
+          "preventing_spread": "How to prevent spreading or worsening"
+        }`;
+    } else if (mode === "medicine") {
+        prompt = `Analyze this image of a medicine bottle, label, or pill. Identify ALL active salts/ingredients and the primary purpose of the medication.
+        Respond ONLY with a valid JSON object strictly matching this format:
+        {
+          "drugName": "Full brand name and active ingredients (salts)",
+          "purpose": "Primary medical purpose",
+          "warnings": "Major warnings or side effects",
+          "dosage_info": "Standard dosage information if visible or general guidelines"
+        }`;
     }
 
     const requestBody = {
@@ -431,7 +464,7 @@ async function analyzeImageWithGemini(imageDataUrl, mode) {
           { text: prompt },
           {
             inline_data: {
-              mime_type: "image/jpeg",
+              mime_type: mimeType,
               data: base64Data
             }
           }
@@ -450,15 +483,24 @@ async function analyzeImageWithGemini(imageDataUrl, mode) {
 
     if (!res.ok) {
         const errText = await res.text();
+        if(errText.includes("API_KEY_INVALID")) {
+            localStorage.removeItem("visiondx_gemini_key");
+        }
         throw new Error(`Gemini API Error: ${errText}`);
     }
 
     const data = await res.json();
     if (data.candidates && data.candidates.length > 0) {
-        let diseaseName = data.candidates[0].content.parts[0].text.trim().replace(/\n/g, "");
-        // Normalize name
-        diseaseName = diseaseName.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-        return [{ label: diseaseName, score: 0.95 }]; // Mocking the HF return format for compatibility
+        let textResponse = data.candidates[0].content.parts[0].text.trim();
+        // Extract JSON from markdown code blocks if necessary
+        textResponse = textResponse.replace(/```json/g, "").replace(/```/g, "").trim();
+        try {
+            const parsed = JSON.parse(textResponse);
+            return parsed;
+        } catch (jsonErr) {
+            console.error("Failed to parse Gemini JSON:", textResponse);
+            return null;
+        }
     }
     return null;
   } catch (e) {
@@ -560,12 +602,31 @@ async function performAnalysis(manualMedicineName = null) {
 
       if (!drugToSearch) {
         DOM.resultsContent.innerHTML = `
+            <div class="empty-results">
+                <i class="ph ph-spinner ph-spin" style="font-size: 3rem; color: var(--primary);"></i>
+                <p id="ocr-progress-text" style="margin-top: 15px;">Analyzing Medicine via Gemini AI...</p>
+            </div>
+        `;
+
+        const geminiResult = await analyzeImageWithGemini(DOM.imagePreview.src, "medicine");
+
+        if (geminiResult && geminiResult.drugName) {
+            resultData = {
+                type: "medicine_wiki", // Reuse this render type to display custom text easily
+                drugName: geminiResult.drugName,
+                wikiData: {
+                    extract: `**Purpose:** ${geminiResult.purpose}\n\n**Warnings:** ${geminiResult.warnings}\n\n**Dosage Info:** ${geminiResult.dosage_info}`
+                }
+            };
+        } else {
+            // Fallback to OCR if Gemini fails
+            DOM.resultsContent.innerHTML = `
                     <div class="empty-results">
                         <i class="ph ph-spinner ph-spin" style="font-size: 3rem; color: var(--primary);"></i>
-                        <p id="ocr-progress-text" style="margin-top: 15px;">Extracting text from image via OCR...</p>
+                        <p id="ocr-progress-text" style="margin-top: 15px;">Gemini Failed. Falling back to OCR...</p>
                     </div>
                 `;
-        const ocrText = await extractMedicineText(DOM.imagePreview.src);
+            const ocrText = await extractMedicineText(DOM.imagePreview.src);
         if (!ocrText || ocrText.trim().length < 2) {
           resultData = {
             type: "medicine_error",
@@ -683,11 +744,6 @@ async function performAnalysis(manualMedicineName = null) {
         }
       }
     } else {
-      const modelName =
-        STATE.mode === "eye"
-          ? "dima806/eye_diseases_classification"
-          : "dima806/skin_diseases_classification";
-
       DOM.resultsContent.innerHTML = `
                 <div class="empty-results">
                     <i class="ph ph-spinner ph-spin" style="font-size: 3rem; color: var(--primary);"></i>
@@ -695,30 +751,31 @@ async function performAnalysis(manualMedicineName = null) {
                 </div>
             `;
 
-      const predictions = await analyzeImageWithGemini(
-        DOM.imagePreview.src,
-        STATE.mode
-      );
+      const geminiResult = await analyzeImageWithGemini(DOM.imagePreview.src, STATE.mode);
 
-      if (
-        predictions &&
-        Array.isArray(predictions) &&
-        predictions.length > 0 &&
-        predictions[0].label
-      ) {
-        const topConditions = predictions.slice(0, 3).map((p) => ({
-          name: p.label
-            .replace(/_/g, " ")
-            .replace(/\b\w/g, (l) => l.toUpperCase()),
-          prob: Math.round(p.score * 100),
-        }));
+      if (geminiResult && geminiResult.name) {
+          // Add dynamically to database so modals work
+          const dbMatch = DISEASE_DATABASE[STATE.mode] && DISEASE_DATABASE[STATE.mode][geminiResult.name];
+          if (!dbMatch) {
+              if (!DISEASE_DATABASE[STATE.mode]) DISEASE_DATABASE[STATE.mode] = {};
+              DISEASE_DATABASE[STATE.mode][geminiResult.name] = {
+                  name: geminiResult.name,
+                  description: geminiResult.description || "No description provided.",
+                  causes: geminiResult.causes || "Unknown",
+                  precautions: geminiResult.precautions || "Unknown",
+                  early_implications: geminiResult.early_implications || "Unknown",
+                  pre_consultation: geminiResult.pre_consultation || "Unknown",
+                  cause_of_spread: geminiResult.cause_of_spread || "Unknown",
+                  preventing_spread: geminiResult.preventing_spread || "Unknown",
+                  images: [DOM.imagePreview.src]
+              };
+          }
 
-        const desc = await fetchWikipediaSummary(topConditions[0].name);
-        resultData = {
-          type: "condition",
-          conditions: topConditions,
-          primaryDesc: desc,
-        };
+          resultData = {
+              type: "condition",
+              conditions: [{ name: geminiResult.name, prob: 95 }],
+              primaryDesc: geminiResult.description
+          };
       } else {
         const imageSeed = hashString(DOM.imagePreview.src || "");
         let conditionList = STATE.mode === "eye" ? CONDITIONS.eye : CONDITIONS.skin;
@@ -1053,20 +1110,14 @@ function renderResults(data) {
   } else if (data.type === "medicine_wiki") {
     html = `
             <div class="result-card" style="border-left: 4px solid var(--success);">
-                <h3><i class="ph-fill ph-check-circle" style="color: var(--success);"></i> Medicine Verified (Wikipedia)</h3>
+                <h3><i class="ph-fill ph-check-circle" style="color: var(--success);"></i> Medicine Verified</h3>
                 <h2 style="margin: 8px 0; font-size: 1.5rem; color: var(--primary);">${data.drugName}</h2>
-                <span class="badge info" style="font-size: 0.9rem;">Confidence: Found in general database</span>
+                <span class="badge info" style="font-size: 0.9rem;">AI Verification</span>
             </div>
 
             <div class="result-card" style="border-left: 4px solid var(--secondary);">
-                <h3><i class="ph-fill ph-info"></i> Information & Description</h3>
-                <p style="font-size: 0.95rem; color: var(--text-main); margin-top: 4px; line-height: 1.6;">${data.wikiData.description}</p>
-                ${data.wikiData.url ? `<a href="${data.wikiData.url}" target="_blank" style="color: var(--primary); display: inline-block; margin-top: 10px; font-size: 0.85rem; text-decoration: none;">Read more on Wikipedia <i class="ph ph-arrow-square-out"></i></a>` : ""}
-            </div>
-            
-            <div class="result-card" style="border-left: 4px solid var(--warning);">
-                <h3><i class="ph-fill ph-warning"></i> Note</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; line-height: 1.5;">Detailed FDA dosage and warning information is unavailable for this specific name. Please consult the packaging or a healthcare professional.</p>
+                <h3><i class="ph-fill ph-info"></i> Information & Details</h3>
+                <p style="font-size: 0.95rem; color: var(--text-main); margin-top: 4px; line-height: 1.6; white-space: pre-wrap;">${data.wikiData.extract || data.wikiData.description || ""}</p>
             </div>
         `;
     historyText = `Verified: ${data.drugName}`;
