@@ -401,27 +401,68 @@ async function extractMedicineText(imageDataUrl) {
 
 // --- Hugging Face API ---
 const HF_TOKEN = ""; // Optional: Add Hugging Face Token if rate limited
-async function queryHuggingFace(model, imageDataUrl) {
+async function analyzeImageWithGemini(imageDataUrl, mode) {
   try {
-    const response = await fetch(imageDataUrl);
-    const blob = await response.blob();
+    let API_KEY = localStorage.getItem("visiondx_gemini_key");
+    if (!API_KEY) {
+        API_KEY = prompt("Please enter your Gemini API Key to run the analysis:");
+        if (API_KEY) {
+            localStorage.setItem("visiondx_gemini_key", API_KEY);
+        } else {
+            throw new Error("API Key is required to run Gemini analysis.");
+        }
+    }
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-    const headers = {};
-    if (HF_TOKEN) headers["Authorization"] = `Bearer ${HF_TOKEN}`;
+    // Extract base64 data correctly (remove data:image/jpeg;base64, prefix)
+    const base64Data = imageDataUrl.split(',')[1];
 
-    const res = await fetch(
-      `https://api-inference.huggingface.co/models/${model}`,
-      {
-        headers: headers,
-        method: "POST",
-        body: blob,
-      },
-    );
+    // Construct prompt based on mode
+    let prompt = "";
+    if (mode === "eye") {
+        prompt = "Analyze this image of an eye. What is the single most likely medical condition or disease shown? Reply with ONLY the name of the disease, nothing else. Pick from common diseases like Conjunctivitis, Cataract, Glaucoma, etc. If it looks healthy, reply 'Healthy'.";
+    } else {
+        prompt = "Analyze this image of skin. What is the single most likely dermatological condition or disease shown? Reply with ONLY the name of the disease, nothing else. Pick from common diseases like Melanoma, Eczema, Psoriasis, Ringworm, etc. If it looks healthy, reply 'Healthy'.";
+    }
 
-    if (!res.ok) throw new Error("HF API Error");
-    return await res.json();
+    const requestBody = {
+      contents: [{
+        parts: [
+          { text: prompt },
+          {
+            inline_data: {
+              mime_type: "image/jpeg",
+              data: base64Data
+            }
+          }
+        ]
+      }],
+      generationConfig: {
+        temperature: 0.2,
+      }
+    };
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Gemini API Error: ${errText}`);
+    }
+
+    const data = await res.json();
+    if (data.candidates && data.candidates.length > 0) {
+        let diseaseName = data.candidates[0].content.parts[0].text.trim().replace(/\n/g, "");
+        // Normalize name
+        diseaseName = diseaseName.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+        return [{ label: diseaseName, score: 0.95 }]; // Mocking the HF return format for compatibility
+    }
+    return null;
   } catch (e) {
-    console.error("HF Inference Error:", e);
+    console.error("Gemini API Error:", e);
     return null;
   }
 }
@@ -650,13 +691,13 @@ async function performAnalysis(manualMedicineName = null) {
       DOM.resultsContent.innerHTML = `
                 <div class="empty-results">
                     <i class="ph ph-spinner ph-spin" style="font-size: 3rem; color: var(--primary);"></i>
-                    <p style="margin-top: 15px;">Analyzing via Hugging Face Models...</p>
+                    <p style="margin-top: 15px;">Analyzing via Gemini Vision AI...</p>
                 </div>
             `;
 
-      const predictions = await queryHuggingFace(
-        modelName,
+      const predictions = await analyzeImageWithGemini(
         DOM.imagePreview.src,
+        STATE.mode
       );
 
       if (

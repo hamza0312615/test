@@ -1025,6 +1025,8 @@ button {
     height: auto !important;
     min-height: 100vh;
     padding-right: 45px !important; /* Keep radial button clear */
+    position: relative;
+    z-index: 1; /* Keep under the radial menu */
   }
 
   .main-content {
