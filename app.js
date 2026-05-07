@@ -613,9 +613,9 @@ async function performAnalysis(manualMedicineName = null) {
         if (geminiResult && geminiResult.drugName) {
             resultData = {
                 type: "medicine_wiki", // Reuse this render type to display custom text easily
-                drugName: geminiResult.drugName,
+                drugName: geminiResult.drugName || "Medicine Identified",
                 wikiData: {
-                    extract: `**Purpose:** ${geminiResult.purpose}\n\n**Warnings:** ${geminiResult.warnings}\n\n**Dosage Info:** ${geminiResult.dosage_info}`
+                    extract: `Purpose: ${geminiResult.purpose || "N/A"}\n\nWarnings: ${geminiResult.warnings || "N/A"}\n\nDosage Info: ${geminiResult.dosage_info || "N/A"}`
                 }
             };
         } else {
@@ -801,10 +801,14 @@ async function performAnalysis(manualMedicineName = null) {
     renderResults(resultData);
   } catch (e) {
     console.error(e);
+    let errMsg = "An error occurred during analysis. Please try again.";
+    if (e.message && e.message.includes("API_KEY_INVALID")) {
+        errMsg = "Invalid Gemini API Key. Please provide a valid key.";
+    }
     DOM.resultsContent.innerHTML = `
             <div class="empty-results" style="color: var(--danger);">
                 <i class="ph-fill ph-warning-circle"></i>
-                <p>An error occurred during analysis. Please try again.</p>
+                <p>${errMsg}</p>
             </div>
         `;
   } finally {
