@@ -289,6 +289,10 @@ function setupMediaInputs() {
       DOM.imagePreview.style.display = "block";
       STATE.hasImage = true;
       DOM.btnAnalyze.disabled = false;
+      const symptomBox = document.getElementById("symptom-context-container");
+      if (symptomBox && STATE.mode !== "medicine" && STATE.inputMode !== "manual") {
+          symptomBox.style.display = "block";
+      }
     };
     reader.readAsDataURL(file);
   }
@@ -375,6 +379,11 @@ function freezeCameraFrame() {
     DOM.imagePreview.src = canvas.toDataURL("image/jpeg");
     DOM.imagePreview.style.display = "block";
     stopCamera();
+
+    const symptomBox = document.getElementById("symptom-context-container");
+    if (symptomBox && STATE.mode !== "medicine" && STATE.inputMode !== "manual") {
+        symptomBox.style.display = "block";
+    }
   }
 }
 
@@ -421,8 +430,12 @@ async function analyzeImageWithGemini(imageDataUrl, mode) {
 
     // Construct prompt based on mode
     let prompt = "";
+
+    const symptoms = document.getElementById("symptom-input") ? document.getElementById("symptom-input").value.trim() : "";
+    let symptomContext = symptoms ? `The patient also reports the following symptoms: "${symptoms}". Take these into account for a more accurate diagnosis.` : "";
+
     if (mode === "eye") {
-        prompt = `Analyze this image of an eye. Identify the most likely medical condition or disease shown.
+        prompt = `Analyze this image of an eye. ${symptomContext} Identify the most likely medical condition or disease shown.
         Respond ONLY with a valid JSON object strictly matching this format:
         {
           "name": "Name of the disease (e.g., Cataract, Conjunctivitis, or Healthy)",
@@ -435,7 +448,7 @@ async function analyzeImageWithGemini(imageDataUrl, mode) {
           "preventing_spread": "How to prevent spreading or worsening"
         }`;
     } else if (mode === "skin") {
-        prompt = `Analyze this image of skin. Identify the most likely dermatological condition or disease shown.
+        prompt = `Analyze this image of skin. ${symptomContext} Identify the most likely dermatological condition or disease shown.
         Respond ONLY with a valid JSON object strictly matching this format:
         {
           "name": "Name of the disease (e.g., Melanoma, Psoriasis, or Healthy)",
@@ -1294,3 +1307,94 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// --- Groq VIP Assistant Logic ---
+// Dynamic Groq API Key Handling
+function getGroqKey() {
+    let key = localStorage.getItem("visiondx_groq_key");
+    if (!key) {
+        key = prompt("Please enter your Groq API Key to enable the AI Assistant:");
+        if (key) {
+            localStorage.setItem("visiondx_groq_key", key);
+        } else {
+            throw new Error("Groq API Key is required.");
+        }
+    }
+    return key;
+}
+let chatHistory = [
+    { role: "system", content: "You are VisionDx Pro, an elite, highly advanced AI medical assistant. You are concise, highly professional, empathetic, and extremely knowledgeable about dermatology, ophthalmology, and pharmacology. Always end with a disclaimer that you are an AI prototype and they should consult a doctor." }
+];
+
+window.toggleAssistant = function() {
+    const widget = document.getElementById("ai-assistant-widget");
+    widget.classList.toggle("active");
+    if(widget.classList.contains("active")) {
+        document.getElementById("chat-input").focus();
+        const badge = document.querySelector(".fab-badge");
+        if(badge) badge.style.display = "none";
+    }
+};
+
+window.handleChatKeyPress = function(e) {
+    if (e.key === "Enter") {
+        sendChatMessage();
+    }
+};
+
+window.sendChatMessage = async function() {
+    const input = document.getElementById("chat-input");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    input.value = "";
+    appendChatMessage(msg, "user");
+    chatHistory.push({ role: "user", content: msg });
+
+    // Show typing
+    const chatBody = document.getElementById("chat-messages");
+    const typingId = "typing-" + Date.now();
+    chatBody.innerHTML += `<div id="${typingId}" class="typing-indicator"><span></span><span></span><span></span></div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${getGroqKey()}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "llama3-70b-8192", // Using a powerful model for medical info
+                messages: chatHistory,
+                temperature: 0.3,
+                max_tokens: 500
+            })
+        });
+
+        if (!response.ok) throw new Error("Groq API Error");
+
+        const data = await response.json();
+        const aiResponse = data.choices[0].message.content;
+
+        document.getElementById(typingId).remove();
+        appendChatMessage(aiResponse, "ai");
+        chatHistory.push({ role: "assistant", content: aiResponse });
+
+    } catch (e) {
+        console.error(e);
+        document.getElementById(typingId).remove();
+        appendChatMessage("I'm currently experiencing high network traffic. Please try again later.", "ai");
+    }
+};
+
+function appendChatMessage(msg, sender) {
+    const chatBody = document.getElementById("chat-messages");
+
+    // Simple markdown formatting for bold and newlines
+    let formattedMsg = msg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    formattedMsg = formattedMsg.replace(/\n/g, '<br>');
+
+    chatBody.innerHTML += `<div class="message ${sender}-message">${formattedMsg}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+}

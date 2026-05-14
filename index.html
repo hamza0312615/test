@@ -57,7 +57,7 @@
         <button class="close-sidebar-btn" onclick="toggleMobileSidebar()" style="display:none; position:absolute; top:10px; right:10px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;"><i class="fas fa-times"></i></button>
         <div class="logo">
           <i class="ph-fill ph-heartbeat"></i>
-          <span>VisionDx</span>
+          <span>VisionDx<span class="vip-badge">Pro</span></span>
         </div>
 
         <nav class="main-nav">
@@ -259,6 +259,12 @@
             </div>
 
             <div class="action-footer" id="ai-action-footer">
+              <!-- Symptom Context Input -->
+              <div class="symptom-context-container" id="symptom-context-container" style="width: 100%; margin-top: 15px; margin-bottom: 30px; display: none; padding-bottom: 10px;">
+                <label for="symptom-input" style="display:block; margin-bottom: 8px; font-size: 0.9rem; color: var(--primary);"><i class="ph-fill ph-stethoscope"></i> Additional Symptoms (Optional)</label>
+                <textarea id="symptom-input" placeholder="E.g., I've had this rash for 3 days and it's very itchy..." rows="2" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--panel-border); color: white; padding: 10px; border-radius: 12px; font-family: var(--font-family); resize: none;"></textarea>
+              </div>
+
               <button id="btn-capture-analyze" class="analyze-btn" disabled>
                 <i class="ph-fill ph-check-circle"></i> Analyze Image
               </button>
@@ -382,6 +388,33 @@
         </div>
       </div>
     </div>
+
+
+    <!-- Groq AI Assistant Widget -->
+    <div id="ai-assistant-widget" class="glass-panel">
+        <div class="assistant-header" onclick="toggleAssistant()">
+            <div class="assistant-title">
+                <i class="ph-fill ph-robot" style="color: var(--primary); font-size: 1.2rem;"></i>
+                <span>VisionDx Pro Assistant</span>
+                <span class="pulse-indicator"></span>
+            </div>
+            <button class="assistant-close"><i class="ph ph-caret-down"></i></button>
+        </div>
+        <div class="assistant-body" id="chat-messages">
+            <div class="message ai-message">
+                Hello! I am your VisionDx Pro medical assistant powered by Groq's fast LLaMA models. How can I help you today?
+            </div>
+        </div>
+        <div class="assistant-footer">
+            <input type="text" id="chat-input" placeholder="Ask about symptoms, diseases, or prevention..." onkeypress="handleChatKeyPress(event)" />
+            <button onclick="sendChatMessage()" id="send-chat-btn"><i class="ph-fill ph-paper-plane-right"></i></button>
+        </div>
+    </div>
+
+    <button id="assistant-fab" onclick="toggleAssistant()">
+        <i class="ph-fill ph-robot"></i>
+        <div class="fab-badge">1</div>
+    </button>
 
   </body>
 </html>
