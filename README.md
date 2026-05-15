@@ -71,3 +71,12 @@ Because VisionDx is built using vanilla web technologies, no build steps or bund
 ##  Privacy
 
 VisionDx processes image data in the browser (via Tesseract.js) or sends it temporarily to Hugging Face's inference API. No patient data or imagery is permanently stored by this application. Session history is kept strictly locally inside the browser's `localStorage`.
+
+
+## Advanced Features Implemented
+
+* **Gemini Multimodal AI:** Highly accurate image analysis using Google's `gemini-1.5-flash` model.
+* **Groq Chatbot:** Integrated LLaMA 3 70B via Groq for an ultra-fast, intelligent triage and symptom assistant.
+* **Multimodal Context:** Allows users to provide written symptom descriptions alongside image uploads for personalized diagnostics.
+* **Offline Fallbacks:** Includes local Tesseract.js OCR and static disease dictionaries to fail gracefully when network conditions are poor.
+* **Responsive UI:** Features modern radial menus, glassmorphism aesthetics, and explicit CSS scaling to ensure it looks flawless on mobile devices.

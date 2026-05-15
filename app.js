@@ -461,13 +461,14 @@ async function analyzeImageWithGemini(imageDataUrl, mode) {
           "preventing_spread": "How to prevent spreading or worsening"
         }`;
     } else if (mode === "medicine") {
-        prompt = `Analyze this image of a medicine bottle, label, or pill. Identify ALL active salts/ingredients and the primary purpose of the medication.
+        prompt = `Analyze this image of a medicine bottle, label, or pill. Identify ALL active salts/ingredients and the primary purpose of the medication. ALSO check for severe drug-drug or food interactions associated with these salts.
         Respond ONLY with a valid JSON object strictly matching this format:
         {
           "drugName": "Full brand name and active ingredients (salts)",
           "purpose": "Primary medical purpose",
           "warnings": "Major warnings or side effects",
-          "dosage_info": "Standard dosage information if visible or general guidelines"
+          "dosage_info": "Standard dosage information if visible or general guidelines",
+          "interactions": "Critical drug or food interactions to avoid (Medicine Interaction Checker feature)"
         }`;
     }
 
@@ -628,7 +629,7 @@ async function performAnalysis(manualMedicineName = null) {
                 type: "medicine_wiki", // Reuse this render type to display custom text easily
                 drugName: geminiResult.drugName || "Medicine Identified",
                 wikiData: {
-                    extract: `Purpose: ${geminiResult.purpose || "N/A"}\n\nWarnings: ${geminiResult.warnings || "N/A"}\n\nDosage Info: ${geminiResult.dosage_info || "N/A"}`
+                    extract: `Purpose: ${geminiResult.purpose || "N/A"}\n\nWarnings: ${geminiResult.warnings || "N/A"}\n\nDosage Info: ${geminiResult.dosage_info || "N/A"}\n\nInteractions: ${geminiResult.interactions || "None detected"}`
                 }
             };
         } else {
